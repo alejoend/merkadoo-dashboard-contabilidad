@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ProfileSchema = new Schema({
   usuario: {
     type: Schema.Types.ObjectId,
-    ref: users
+    ref: "users"
   },
   handle: {
     type: String,
@@ -14,6 +14,10 @@ const ProfileSchema = new Schema({
   },
   bio: {
     type: String
+  },
+  contacto: {
+    type: [String],
+    required: true
   }
 });
 
