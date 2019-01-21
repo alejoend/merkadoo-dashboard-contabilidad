@@ -15,9 +15,18 @@ const ProfileSchema = new Schema({
   bio: {
     type: String
   },
-  contacto: {
-    type: [String]
-  }
+  contacto: [
+    {
+      titulo: {
+        type: String,
+        required: true
+      },
+      contenido: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
 module.exports = Profile = mongoose.model("profile", ProfileSchema);

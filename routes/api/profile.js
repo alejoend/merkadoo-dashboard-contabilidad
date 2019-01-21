@@ -5,6 +5,7 @@ const passport = require("passport");
 
 // cargar validador de entrada de perfil
 const validateProfileInput = require("../../validation/profile");
+const validateContactoInput = require("../../validation/contacto");
 
 // cargar perfil
 const Profile = require("../../models/Profile");
@@ -125,10 +126,6 @@ router.post(
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.bio) profileFields.bio = req.body.bio;
 
-    if (typeof req.body.contacto !== "undefined") {
-      profileFields.contacto = req.body.contacto.split(",");
-    }
-
     Profile.findOne({ user: req.user.id }).then(profile => {
       console.log(profile);
       if (("perfil: ", profile)) {
@@ -166,13 +163,44 @@ router.post(
   "/contacto",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateContactoInput(req.body);
+    // verificar
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     Profile.findOne({ user: req.user.id }).then(profile => {
+      const newContact0 = {
+        titulo: req.body.titulo,
+        contenido: req.body.contenido
+      };
       // agregar a arreglo de contacto
-      profile.contacto.unshift(req.body.contacto);
+      profile.contacto.unshift(newContact0);
 
       // guardar
       profile.save().then(profile => res.json(profile));
     });
+  }
+);
+
+//@route DELETE api/profile/contacto
+//@description Agregar contacto
+//@acceso: privado
+router.delete(
+  "/contacto/:con_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        // get índice para remover
+        const removeIndex = profile.contacto
+          .map(item => item.id)
+          .indexOf(req.params.con_id);
+
+        profile.contacto.splice(removeIndex, 1);
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 module.exports = router;
