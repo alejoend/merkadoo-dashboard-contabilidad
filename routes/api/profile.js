@@ -27,6 +27,7 @@ router.get(
     const errors = {};
 
     Profile.findOne({ user: req.user.id })
+      .populate("user", ["nombre", "avatar"])
       .then(profile => {
         if (!profile) {
           errors.noProfile = "No hay perfil para este usuario";
@@ -35,6 +36,73 @@ router.get(
         res.json(profile);
       })
       .catch(err => res.status(404).json(err));
+  }
+);
+
+//@route GET api/profile/all
+//@description get todos los perfiles
+//@acceso: privado
+router.get(
+  "/all",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Profile.find()
+      .populate("user", ["name", "avatar"])
+      .then(profiles => {
+        if (!profiles) {
+          errors.noprofiles = "There are no profiles";
+          return res.status(404).json(errors);
+        }
+        res.json(profiles);
+      })
+      .catch(err => res.status(404).json({ profile: "No hay perfiles" }));
+  }
+);
+
+//@route GET api/profile/handle/:handle
+//@description get perfill por el handle
+//@acceso: privado
+router.get(
+  "/handle/:handle",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Profile.findOne({ handle: req.params.handle })
+      .populate("user", ["name", "avatar"])
+      .then(profile => {
+        if (!profile) {
+          errors.noProfile = "No existe perfil para este usuario";
+          res.status(404).json(errors);
+        } else {
+          res.json(profile);
+        }
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+//@route GET api/profile/user/:user_id
+//@description get pefirl por id de usuario
+//@acceso: privado
+router.get(
+  "/user/:user_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Profile.findOne({ user: req.params.user_id })
+      .populate("user", ["name", "avatar"])
+      .then(profile => {
+        if (!profile) {
+          errors.noProfile = "No existe perfil para este usuario";
+          res.status(404).json(errors);
+        } else {
+          res.json(profile);
+        }
+      })
+      .catch(err =>
+        res.status(404).json({ profile: "No hay perfil para este usuario" })
+      );
   }
 );
 
@@ -62,7 +130,8 @@ router.post(
     }
 
     Profile.findOne({ user: req.user.id }).then(profile => {
-      if (profile) {
+      console.log(profile);
+      if (("perfil: ", profile)) {
         // actualizar
         Profile.findOneAndUpdate(
           { user: req.user.id },
@@ -77,13 +146,13 @@ router.post(
           if (profile) {
             errors.handle = "El handle ya existe";
             res.status(400).json(errors);
+          } else {
+            // guardar perfil
+            new Profile(profileFields)
+              .save()
+              .then(profile => res.json(profile))
+              .catch(err => res.status(400).json(err));
           }
-
-          // guardar perfil
-          new Profile(profileFields)
-            .save()
-            .then(profile => res.json(profile))
-            .catch(err => res.status(400).json(err));
         });
       }
     });

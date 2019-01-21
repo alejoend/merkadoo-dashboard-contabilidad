@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // crear modelo
 const ProfileSchema = new Schema({
-  usuario: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "users"
   },
