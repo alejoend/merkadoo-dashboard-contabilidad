@@ -3,6 +3,9 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+// cargar validador de entrada de perfil
+const validateProfileInput = require("../../validation/profile");
+
 // cargar perfil
 const Profile = require("../../models/Profile");
 // cargar usuario
@@ -43,9 +46,14 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+    // verificar
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     // campos de perfil
     const profileFields = {};
-    profileFields.req.user.id;
+    profileFields.user = req.user.id;
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.bio) profileFields.bio = req.body.bio;
 
@@ -67,16 +75,18 @@ router.post(
         // verificar si existe el handle
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
-            erros.handle = "El handle ya existe";
-            res.status(400).json(erros);
+            errors.handle = "El handle ya existe";
+            res.status(400).json(errors);
           }
 
           // guardar perfil
-          new Profile(profileFields).save().then(profile => res.json(profile));
+          new Profile(profileFields)
+            .save()
+            .then(profile => res.json(profile))
+            .catch(err => res.status(400).json(err));
         });
       }
     });
   }
 );
-
 module.exports = router;
