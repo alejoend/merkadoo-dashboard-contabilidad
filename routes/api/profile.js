@@ -158,4 +158,21 @@ router.post(
     });
   }
 );
+
+//@route POST api/profile/contacto
+//@description Agregar contacto
+//@acceso: privado
+router.post(
+  "/contacto",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      // agregar a arreglo de contacto
+      profile.contacto.unshift(req.body.contacto);
+
+      // guardar
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
 module.exports = router;
