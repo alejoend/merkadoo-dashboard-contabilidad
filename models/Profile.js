@@ -16,8 +16,7 @@ const ProfileSchema = new Schema({
     type: String
   },
   contacto: {
-    type: [String],
-    required: true
+    type: [String]
   }
 });
 

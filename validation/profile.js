@@ -4,19 +4,15 @@ const isEmpty = require("./is-empty");
 module.exports = function validateLoginInput(data) {
   let errors = {};
 
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+  data.handle = !isEmpty(data.handle) ? data.handle : "";
+  data.contacto = !isEmpty(data.contacto) ? data.contacto : "";
 
-  if (!Validator.isEmail(data.email)) {
-    errors.email = "El email es inválido";
+  if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
+    errors.handle = "El handle debe ser de entre 2 y 40 carácteres";
   }
 
-  if (Validator.isEmpty(data.email)) {
-    errors.email = "Email es requerido";
-  }
-
-  if (Validator.isEmpty(data.password)) {
-    errors.password = "Contraseña es requerida";
+  if (Validator.isEmpty(data.handle)) {
+    errors.handle = "Handle es un campo requerido";
   }
 
   return {
