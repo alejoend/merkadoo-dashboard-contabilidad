@@ -39,7 +39,7 @@ router.get(
 //@description crear perfil
 //@acceso: privado
 
-router.get(
+router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
