@@ -5,7 +5,6 @@ const passport = require("passport");
 
 // cargar validador de entrada de perfil
 const validateProfileInput = require("../../validation/profile");
-const validateContactoInput = require("../../validation/contacto");
 
 // cargar perfil
 const Profile = require("../../models/Profile");
@@ -155,7 +154,7 @@ router.post(
     });
   }
 );
-
+/*
 //@route POST api/profile/contacto
 //@description Agregar contacto
 //@acceso: privado
@@ -202,7 +201,7 @@ router.delete(
       })
       .catch(err => res.status(404).json(err));
   }
-);
+);*/
 
 //@route DELETE api/profile
 //@description borrar perfil y usuario

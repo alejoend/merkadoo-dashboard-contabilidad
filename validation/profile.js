@@ -5,7 +5,6 @@ module.exports = function validateLoginInput(data) {
   let errors = {};
 
   data.handle = !isEmpty(data.handle) ? data.handle : "";
-  data.contacto = !isEmpty(data.contacto) ? data.contacto : "";
 
   if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
     errors.handle = "El handle debe ser de entre 2 y 40 carácteres";
