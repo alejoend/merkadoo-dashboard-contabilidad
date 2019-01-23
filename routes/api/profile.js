@@ -126,8 +126,7 @@ router.post(
     if (req.body.bio) profileFields.bio = req.body.bio;
 
     Profile.findOne({ user: req.user.id }).then(profile => {
-      console.log(profile);
-      if (("perfil: ", profile)) {
+      if (profile) {
         // actualizar
         Profile.findOneAndUpdate(
           { user: req.user.id },
