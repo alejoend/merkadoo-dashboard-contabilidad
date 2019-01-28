@@ -6,7 +6,8 @@ const passport = require("passport");
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
-const facturas = require("./routes/api/facturas");
+const ventas = require("./routes/api/ventas");
+const ventasStores = require("./routes/api/ventas-stores");
 
 const app = express();
 // ponerse el casco es importante
@@ -35,7 +36,8 @@ require("./config/passport")(passport);
 // rutas
 app.use("/api/users/", users);
 app.use("/api/profile/", profile);
-app.use("/api/facturas/", facturas);
+app.use("/api/ventas/", ventas);
+app.use("/api/ventas-stores/", ventasStores);
 
 const port = process.env.PORT || 5000;
 
