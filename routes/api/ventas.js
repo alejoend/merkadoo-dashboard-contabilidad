@@ -5,6 +5,9 @@ const passport = require("passport");
 // cargar modelo de ventas
 const Venta = require("../../models/Venta");
 
+// cargar validación de entrada de ventas
+const validateVentaInput = require("../../validation/venta");
+
 //@route GET api/ventas
 //@description GET TODAS ventas
 //@acceso: privado
@@ -20,12 +23,19 @@ router.get("/", passport.authenticate("jwt", {session: false}), (req, res) => {
 //@acceso: privado
 
 router.post("/register", passport.authenticate("jwt", {session: false}), (req, res) => {
+  const { errors, isValid } = validateVentaInput(req.body);
+
+  // validar entrada
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
     const venta = new Venta({
         año: req.body.año,
         mes: req.body.mes,
         monto: req.body.monto,
-        ordenes: req.body.ordenes,
-        ordenesAnuladas: req.body.ordenesAnuladas
+        ordenes: req.body.ordenes.split(","),
+        ordenesAnuladas: req.body.ordenesAnuladas.split(",")
     })
     
     venta.save().then(venta => {

@@ -5,6 +5,9 @@ const passport = require("passport");
 // cargar modelo de ventas
 const VentaStore = require("../../models/VentaStore");
 
+// cargar validacion de venta
+const validateVentaStoreInput = require("../../validation/venta-store");
+
 //@route GET api/ventas-stores
 //@description GET TODAS ventas-stores
 //@acceso: privado
@@ -21,13 +24,19 @@ router.get("/", passport.authenticate("jwt", {session: false}), (req, res) => {
 //@acceso: privado
 
 router.post("/register", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const { errors, isValid } = validateVentaStoreInput(req.body);
+
+  // validar entrada
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
     const ventaStore = new VentaStore({
         año: req.body.año,
         mes: req.body.mes,
         store: {
             id: req.body.store,
-            ordenes: req.body.ordenes,
-            ordenesAnuladas: req.body.ordenesAnuladas,
+            ordenes: req.body.ordenes.split(","),
+            ordenesAnuladas: req.body.ordenesAnuladas.split(","),
             monto: req.body.monto
         }
     })
@@ -80,28 +89,6 @@ router.post("/edit-venta-store/:ventaStoreId", passport.authenticate("jwt", {ses
     })
     .catch(err => console.log(err))
 })
-
-exports.postEditProduct = (req, res, next) => {
-    const prodId = req.body.productId;
-    const updatedTitle = req.body.title;
-    const updatedPrice = req.body.price;
-    const updatedImageUrl = req.body.imageUrl;
-    const updatedDesc = req.body.description;
-  
-    Product.findById(prodId)
-      .then(product => {
-        product.title = updatedTitle;
-        product.price = updatedPrice;
-        product.description = updatedDesc;
-        product.imageUrl = updatedImageUrl;
-        return product.save();
-      })
-      .then(result => {
-        console.log('UPDATED PRODUCT!');
-        res.redirect('/admin/products');
-      })
-      .catch(err => console.log(err));
-  };
 
 //@route DELETE api/ventas-stores/:id
 //@description BORRAR venta-store

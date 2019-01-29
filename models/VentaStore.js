@@ -18,11 +18,11 @@ const VentaStoreSchema = new Schema({
             required: true
         },
         ordenes: {
-            type: Number,
+            type: [Number],
             required: true
         },
         ordenesAnuladas: {
-            type: Number,
+            type: [Number],
             default: 0
         },
         monto: {
