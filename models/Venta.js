@@ -26,11 +26,3 @@ const VentaSchema = new Schema({
 });
 
 module.exports = Factura = mongoose.model("ventas", VentaSchema);
-
-/* 
-año
-mes
-ordenes
-ordenes anuladas
-monto
-*/
