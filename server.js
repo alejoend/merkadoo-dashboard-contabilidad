@@ -34,10 +34,10 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // rutas
-app.use("/api/users/", users);
-app.use("/api/profile/", profile);
-app.use("/api/ventas/", ventas);
-app.use("/api/ventas-stores/", ventasStores);
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+app.use("/api/ventas", ventas);
+app.use("/api/ventas-stores", ventasStores);
 
 const port = process.env.PORT || 5000;
 

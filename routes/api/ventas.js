@@ -23,10 +23,15 @@ router.post("/register", passport.authenticate("jwt", {session: false}), (req, r
     }).catch(err => console.log(err))
 })
 
-
-//@route GET api/posts/test
-//@description probar rutas de facturas
-//@acceso: público
-router.get("/test", (req, res) => res.json({ msg: "facturas funciona" }));
+//@route GET api/ventas/:id
+//@description get venta especiífica
+//@acceso: privado
+router.get("/:ventaId", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const ventaId = req.params.ventaId;
+    Venta.findById(ventaId)
+    .then(venta => {
+        res.json(venta);
+    }).catch(err => console.log(err))
+})
 
 module.exports = router;

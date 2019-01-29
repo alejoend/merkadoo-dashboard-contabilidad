@@ -21,3 +21,5 @@ router.post("/register", passport.authenticate("jwt", {session: false}), (req, r
         res.json(venta);
     }).catch(err => console.log(err))
 })
+
+module.exports = router;
