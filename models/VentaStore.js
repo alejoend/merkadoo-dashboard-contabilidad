@@ -14,11 +14,11 @@ const VentaStoreSchema = new Schema({
     store: {
         id: {
             type: Schema.Types.ObjectId,
-            required: true
+            // required: true
         },
         ordenes: {
             type: Number,
-            required: true
+            // required: true
         },
         ordenesAnuladas: {
             type: Number,
@@ -26,7 +26,7 @@ const VentaStoreSchema = new Schema({
         },
         monto: {
             type: Number,
-            required: true
+            // required: true
         }
     }
 });

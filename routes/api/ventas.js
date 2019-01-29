@@ -8,7 +8,7 @@ const Venta = require("../../models/Venta");
 //@route GET api/ventas
 //@description get ventas
 //@acceso: privado
-router.get("/test", passport.authenticate("jwt", {session: false}), (req, res) => {
+router.get("/", passport.authenticate("jwt", {session: false}), (req, res) => {
     Venta.find()
     .then(ventas => {
         res.json(ventas);
