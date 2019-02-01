@@ -18,11 +18,21 @@ const User = require("../../models/User");
 //@acceso: público
 router.get("/test", (req, res) => res.json({ msg: "usuarios funciona" }));
 
+//@route GET api/users/register
+//@description render formulario de registro
+//@acceso: público
+router.get("/register", (req, res) => {
+  res.render("auth/register", {
+    pageTitle: "Registrar Usuario",
+    path: "/api/users/register"
+  });
+});
+
 //@route POST api/users/register
 //@description registrar usuarios
 //@acceso: público
 router.post("/register", (req, res) => {
-    const { errors, isValid } = validateRegisterInput(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body);
 
   // validar entrada
   if (!isValid) {
@@ -60,6 +70,16 @@ router.post("/register", (req, res) => {
         });
       });
     }
+  });
+});
+
+//@route GET api/users/login
+//@description render formulario de login
+//@acceso: público
+router.get("/login", (req, res) => {
+  res.render("auth/login", {
+    pageTitle: "Login",
+    path: "/api/users/login"
   });
 });
 
