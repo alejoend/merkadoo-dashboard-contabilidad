@@ -3,13 +3,21 @@
   padding: 0;
   margin: 0; }
 
+html {
+  height: 100%; }
+
 body {
-  font-family: "Josefin Sans", sans-serif; }
+  font-family: "Josefin Sans", sans-serif;
+  height: 100%; }
 
 /* Add padding to containers */
 .container {
   padding: 16px;
   background-color: white; }
+
+.container h1 {
+  text-align: center;
+  margin: 24px 0 -16px 0; }
 
 /* Full-width input fields */
 input[type="text"],
@@ -36,7 +44,7 @@ hr {
   background-color: #5be172;
   color: white;
   padding: 16px 20px;
-  margin: 8px 0;
+  margin: -8px 0px 8px 0px;
   border: none;
   cursor: pointer;
   width: 100%;
@@ -52,7 +60,8 @@ a {
 /* Set a grey background color and center the text of the "sign in" section */
 .signin {
   background-color: #f1f1f1;
-  text-align: center; }
+  text-align: center;
+  margin: -8px 16px 16px 16px; }
 
 .navbar {
   font-size: 18px;

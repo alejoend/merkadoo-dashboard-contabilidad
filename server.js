@@ -45,7 +45,7 @@ app.use("/api/ventas", ventas);
 app.use("/api/ventas-stores", ventasStores);
 app.use("/", (req, res) => {
   res.render("index", {
-    pageTitle: "Home",
+    pageTitle: "Merkadoo Contabilidad",
     path: "/"
   });
 });
