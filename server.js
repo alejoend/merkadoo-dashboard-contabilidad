@@ -5,10 +5,10 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 
-const users = require("./routes/api/users");
-const profile = require("./routes/api/profile");
-const ventas = require("./routes/api/ventas");
-const ventasStores = require("./routes/api/ventas-stores");
+const userRoutes = require("./routes/api/users");
+const profileRoutes = require("./routes/api/profile");
+const ventaRoutes = require("./routes/api/ventas");
+const ventaStoreRoutes = require("./routes/api/ventas-stores");
 
 const app = express();
 
@@ -39,27 +39,14 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // rutas
-app.use("/api/users", users);
-app.use("/api/profile", profile);
-app.use("/api/ventas", ventas);
-app.use("/api/ventas-stores", ventasStores);
+app.use("/api/users", userRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/ventas", ventaRoutes);
+app.use("/api/ventas-stores", ventaStoreRoutes);
 app.use("/", (req, res) => {
-  /*const isLoggedIn = req
-    .get("Cookie")
-    .split(";")[0]
-    .trim()
-    .split("=")[1];
-  const token = req
-    .get("Cookie")
-    .split(";")[1]
-    .trim()
-    .split("=")[1];
-  console.log("Token:", token);*/
-
   res.render("index", {
     pageTitle: "Merkadoo Contabilidad",
     path: "/"
-    //isAuthenticated: isLoggedIn
   });
 });
 

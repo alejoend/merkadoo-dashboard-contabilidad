@@ -28,22 +28,23 @@
   },
   "homepage": "https://github.com/norbe1994/merkadoo-dashboard-contabilidad#readme",
   "dependencies": {
+    "autoprefixer": "^7.1.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "concat": "^1.0.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "gravatar": "^1.8.0",
     "helmet": "^3.15.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.5",
     "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^10.11.0",
-    "autoprefixer": "^7.1.4",
-    "concat": "^1.0.3",
-    "npm-run-all": "^4.1.1",
-    "postcss-cli": "^4.1.1"
+    "postcss-cli": "^4.1.1",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
