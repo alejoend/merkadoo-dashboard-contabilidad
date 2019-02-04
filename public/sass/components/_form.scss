@@ -1,14 +1,23 @@
 /* Add padding to containers */
 .container {
   padding: 16px;
-  background-color: white;
-}
+  background-color: $white;
+  & h1 {
+    text-align: center;
+    margin: 24px 0 -16px 0;
+  }
+  /* Add a blue text color to links */
+  & a {
+    color: $bluetxt;
+  }
 
-.container h1 {
-  text-align: center;
-  margin: 24px 0 -16px 0;
+  /* Set a grey background color and center the text of the "sign in" section */
+  &__signin {
+    background-color: $bgcolor-signin;
+    text-align: center;
+    margin: -8px 16px 16px 16px;
+  }
 }
-
 /* Full-width input fields */
 input[type="text"],
 input[type="password"] {
@@ -17,45 +26,30 @@ input[type="password"] {
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
-  background: #f1f1f1;
+  background: $bgcolor-signin;
 }
-
 input[type="text"]:focus,
 input[type="password"]:focus {
-  background-color: #ddd;
+  background-color: $bgcolor-input;
   outline: none;
 }
-
-/* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
-
 /* Set a style for the submit button */
 .registerbtn {
-  background-color: #5be172;
-  color: white;
+  background-color: $bgcolor-nav;
+  color: $white;
   padding: 16px 20px;
   margin: -8px 0px 8px 0px;
   border: none;
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  &__:hover {
+    opacity: 1;
+  }
 }
 
-.registerbtn:hover {
-  opacity: 1;
-}
-
-/* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
-
-/* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-  margin: -8px 16px 16px 16px;
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid $bgcolor-signin;
+  margin-bottom: 25px;
 }

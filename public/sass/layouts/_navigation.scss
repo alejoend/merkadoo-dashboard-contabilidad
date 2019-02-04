@@ -1,40 +1,38 @@
 .navbar {
   font-size: 18px;
-  background-color: #5be172;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: $bgcolor-nav;
+  border: 1px solid $nav-border;
   padding-bottom: 10px;
+
+  &__toggle {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    color: $grey2;
+    font-size: 24px;
+  }
+  &__logo {
+    display: inline-block;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-left: 40px;
+  }
 }
 
 .main-nav {
   list-style-type: none;
   display: none;
-}
 
+  &__li {
+    text-align: center;
+    margin: 15px auto;
+  }
+}
 .nav-links,
 .logo {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.main-nav li {
-  text-align: center;
-  margin: 15px auto;
-}
-
-.logo {
-  display: inline-block;
-  font-size: 22px;
-  margin-top: 10px;
-  margin-left: 20px;
-}
-
-.navbar-toggle {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 24px;
+  color: $grey1;
 }
 
 .active {
@@ -55,26 +53,21 @@
     margin-right: 30px;
     flex-direction: row;
     justify-content: flex-end;
+    &__li {
+      margin: 0;
+    }
   }
-
-  .main-nav li {
-    margin: 0;
-  }
-
   .nav-links {
     margin-left: 40px;
   }
-
   .logo {
     margin-top: 0;
   }
-
   .navbar-toggle {
     display: none;
   }
-
   .logo:hover,
   .nav-links:hover {
-    color: rgba(255, 255, 255, 1);
+    color: $color-hover;
   }
 }

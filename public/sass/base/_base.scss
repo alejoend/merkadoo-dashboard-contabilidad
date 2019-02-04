@@ -2,13 +2,13 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
 
-html {
-  height: 100%;
-}
+  &__html {
+    height: 100%;
+  }
 
-body {
-  font-family: "Josefin Sans", sans-serif;
-  height: 100%;
+  &__body {
+    font-family: "Josefin Sans", sans-serif;
+    height: 100%;
+  }
 }
