@@ -27,7 +27,8 @@ exports.getVentaForm = (passport.authenticate("jwt", { session: false }),
   res
     .render("venta/register", {
       pageTitle: "Registro de venta",
-      path: "api/ventas/register"
+      path: "api/ventas/register",
+      isLoggedIn: req.session.isLoggedIn
     })
     .catch(err => console.log(err));
 });

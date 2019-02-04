@@ -27,6 +27,11 @@ router.get("/login", authController.getLogin);
 //@acceso: público
 router.post("/login", authController.postLogin);
 
+//@route POST api/users/logout
+//@description logout de usuario
+//@acceso: privado
+router.post("/logout", authController.postLogout);
+
 //@route GET api/users/current
 //@description devuelve usuario actual
 //@acceso: privado

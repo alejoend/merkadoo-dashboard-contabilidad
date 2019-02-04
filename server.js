@@ -2,8 +2,11 @@ const express = require("express");
 const helmet = require("helmet");
 const path = require("path");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const keys = require("./config/keys");
 
 const userRoutes = require("./routes/api/users");
 const profileRoutes = require("./routes/api/profile");
@@ -11,23 +14,32 @@ const ventaRoutes = require("./routes/api/ventas");
 const ventaStoreRoutes = require("./routes/api/ventas-stores");
 
 const app = express();
+const store = new MongoDBStore({
+  uri: keys.mongoURI,
+  collection: "sessions"
+});
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 // ponerse el casco es importante
 app.use(helmet());
 
-// middleware de body-parser
+// middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
-
-// configuración de base de datos
-const db = require("./config/keys").mongoURI;
+app.use(
+  session({
+    secret: keys.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    store: store
+  })
+);
 
 // conectar a mongo db
 mongoose
-  .connect(db)
+  .connect(keys.mongoURI)
   .then(() => {
     console.log("conexión exitosa con mongo DB");
   })
@@ -46,7 +58,8 @@ app.use("/api/ventas-stores", ventaStoreRoutes);
 app.use("/", (req, res) => {
   res.render("index", {
     pageTitle: "Merkadoo Contabilidad",
-    path: "/"
+    path: "/",
+    isLoggedIn: req.session.isLoggedIn
   });
 });
 

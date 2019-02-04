@@ -18,7 +18,8 @@ exports.getRegister = (req, res, next) => {
   res
     .render("auth/register", {
       pageTitle: "Registrar Usuario",
-      path: "/api/users/register"
+      path: "/api/users/register",
+      isLoggedIn: req.session.isLoggedIn
     })
     .catch(err => {
       console.log(err);
@@ -74,11 +75,11 @@ exports.postRegister = (req, res, next) => {
 //@description render formulario de login
 //@acceso: público
 exports.getLogin = (req, res, next) => {
-  res
-    .render("auth/login", { pageTitle: "Login", path: "/api/users/login" })
-    .catch(err => {
-      console.log(err);
-    });
+  res.render("auth/login", {
+    pageTitle: "Login",
+    path: "/api/users/login",
+    isLoggedIn: req.session.isLoggedIn
+  });
 };
 
 //@route POST api/users/login
@@ -105,25 +106,39 @@ exports.postLogin = (req, res, next) => {
     // verificar contraseña
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        res.redirect("/");
         // usuario encontrado
-        const payload = { id: user.id, name: user.name, avatar: user.avatar }; // crear payload jwt
+        // const payload = { id: user.id, name: user.nombre, avatar: user.avatar }; // crear payload jwt
+
         // crear sign token
-        jwt.sign(
+        /*jwt.sign(
           payload,
           keys.secretOrKey,
           { expiresIn: 3600 },
           (err, token) => {
-            res.setHeader("Set-Cookie", "Authorization=" + "Bearer " + token);
-            res.setHeader("Set-Cookie", "isLoggedIn=true");
+            res.json(token);
+            req.session.isLoggedIn = true;
             res.redirect("/");
-            console.log(token);
           }
-        );
+        );*/
       } else {
         errors.password = "Contraseña incorrecta";
         return res.status(400).json(errors);
       }
     });
+  });
+};
+
+//@route POST api/users/logout
+//@description logout usuario
+//@acceso: privado
+exports.postLogout = (req, res) => {
+  console.log("En logout");
+  req.session.destroy(err => {
+    console.log(err);
+    res.redirect("/");
   });
 };
 
