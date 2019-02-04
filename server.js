@@ -14,6 +14,7 @@ const userRoutes = require("./routes/api/users");
 const profileRoutes = require("./routes/api/profile");
 const ventaRoutes = require("./routes/api/ventas");
 const ventaStoreRoutes = require("./routes/api/ventas-stores");
+const errorController = require("./controllers/error");
 
 const app = express();
 const store = new MongoDBStore({
@@ -76,6 +77,7 @@ app.use("/", (req, res) => {
     isLoggedIn: req.session.isLoggedIn
   });
 });
+app.use(errorController.get404);
 
 const port = process.env.PORT || 5000;
 
