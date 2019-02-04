@@ -1,2 +1,4 @@
 <%- include('./includes/head.ejs') %> <%- include('./includes/navigation.ejs')
-%> <%- include('./includes/end.ejs') %>
+%> <% if(user){ %>
+<h1>Bienvenido <%= user.nombre %></h1>
+<% } %> <%- include('./includes/end.ejs') %>

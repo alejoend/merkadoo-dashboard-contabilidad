@@ -104,7 +104,11 @@ exports.postLogin = (req, res, next) => {
       if (isMatch) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        res.redirect("/");
+        req.session.save(err => {
+          console.log(err);
+          res.redirect("/");
+        });
+
         // usuario encontrado
         // const payload = { id: user.id, name: user.nombre, avatar: user.avatar }; // crear payload jwt
 

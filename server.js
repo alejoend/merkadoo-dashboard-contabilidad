@@ -74,7 +74,8 @@ app.use("/", (req, res) => {
   res.render("index", {
     pageTitle: "Merkadoo Contabilidad",
     path: "/",
-    isLoggedIn: req.session.isLoggedIn
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user
   });
 });
 app.use(errorController.get404);
