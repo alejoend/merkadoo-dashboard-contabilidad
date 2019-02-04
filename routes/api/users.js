@@ -115,10 +115,9 @@ router.post("/login", (req, res) => {
           keys.secretOrKey,
           { expiresIn: 3600 },
           (err, token) => {
-            res.json({
-              exito: true,
-              token: "Bearer " + token
-            });
+            res.setHeader("Set-Cookie", "Authorization=" + "Bearer " + token);
+            res.redirect("/");
+            console.log(token);
           }
         );
       } else {

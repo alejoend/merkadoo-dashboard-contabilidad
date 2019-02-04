@@ -44,9 +44,22 @@ app.use("/api/profile", profile);
 app.use("/api/ventas", ventas);
 app.use("/api/ventas-stores", ventasStores);
 app.use("/", (req, res) => {
+  /*const isLoggedIn = req
+    .get("Cookie")
+    .split(";")[0]
+    .trim()
+    .split("=")[1];
+  const token = req
+    .get("Cookie")
+    .split(";")[1]
+    .trim()
+    .split("=")[1];
+  console.log("Token:", token);*/
+
   res.render("index", {
     pageTitle: "Merkadoo Contabilidad",
     path: "/"
+    //isAuthenticated: isLoggedIn
   });
 });
 
