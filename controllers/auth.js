@@ -135,7 +135,6 @@ exports.postLogin = (req, res, next) => {
 //@description logout usuario
 //@acceso: privado
 exports.postLogout = (req, res) => {
-  console.log("En logout");
   req.session.destroy(err => {
     console.log(err);
     res.redirect("/");

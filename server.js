@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const keys = require("./config/keys");
 
+const User = require("./models/User");
+
 const userRoutes = require("./routes/api/users");
 const profileRoutes = require("./routes/api/profile");
 const ventaRoutes = require("./routes/api/ventas");
@@ -36,6 +38,18 @@ app.use(
     store: store
   })
 );
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
+});
 
 // conectar a mongo db
 mongoose

@@ -11,11 +11,16 @@ const validateVentaInput = require("../validation/venta");
 //@acceso: privado
 exports.getVentas = (passport.authenticate("jwt", { session: false }),
 (req, res) => {
-  Venta.find()
-    .then(ventas => {
-      res.json(ventas);
-    })
-    .catch(err => console.log(err));
+  if (req.session.isLoggedIn) {
+    Venta.find()
+      .then(ventas => {
+        res.json(ventas);
+      })
+      .catch(err => console.log(err));
+  } else {
+    res.status(401);
+    res.redirect("/");
+  }
 });
 
 //@route GET api/ventas/register
@@ -24,13 +29,18 @@ exports.getVentas = (passport.authenticate("jwt", { session: false }),
 
 exports.getVentaForm = (passport.authenticate("jwt", { session: false }),
 (req, res) => {
-  res
-    .render("venta/register", {
-      pageTitle: "Registro de venta",
-      path: "api/ventas/register",
-      isLoggedIn: req.session.isLoggedIn
-    })
-    .catch(err => console.log(err));
+  if (req.session.isLoggedIn) {
+    res
+      .render("venta/register", {
+        pageTitle: "Registro de venta",
+        path: "api/ventas/register",
+        isLoggedIn: req.session.isLoggedIn
+      })
+      .catch(err => console.log(err));
+  } else {
+    res.status(401);
+    res.redirect("/");
+  }
 });
 
 //@route POST api/ventas/register
@@ -67,12 +77,17 @@ exports.postVenta = (passport.authenticate("jwt", { session: false }),
 //@acceso: privado
 exports.getVenta = (passport.authenticate("jwt", { session: false }),
 (req, res) => {
-  const ventaId = req.params.ventaId;
-  Venta.findById(ventaId)
-    .then(venta => {
-      res.json(venta);
-    })
-    .catch(err => console.log(err));
+  if (req.session.isLoggedIn) {
+    const ventaId = req.params.ventaId;
+    Venta.findById(ventaId)
+      .then(venta => {
+        res.json(venta);
+      })
+      .catch(err => console.log(err));
+  } else {
+    res.status(401);
+    res.redirect("/");
+  }
 });
 
 //@route POST api/ventas/:id
