@@ -1,8 +1,8 @@
 .navbar {
   font-size: 18px;
   background-color: $bgcolor-nav;
-  border: 1px solid $nav-border;
-  padding-bottom: 10px;
+  border: 5px solid $nav-border;
+  padding-bottom: 1px;
 
   &__toggle {
     position: absolute;
@@ -14,8 +14,7 @@
   }
   &__logo {
     display: inline-block;
-    font-size: 22px;
-    margin-top: 10px;
+    margin-top: 40px;
     margin-left: 40px;
   }
 }

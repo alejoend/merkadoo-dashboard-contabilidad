@@ -15,15 +15,11 @@ const User = require("../models/User");
 //@description render formulario de registro
 //@acceso: público
 exports.getRegister = (req, res, next) => {
-  res
-    .render("auth/register", {
-      pageTitle: "Registrar Usuario",
-      path: "/api/users/register",
-      isLoggedIn: req.session.isLoggedIn
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  res.render("auth/register", {
+    pageTitle: "Registrar Usuario",
+    path: "/api/users/register",
+    isLoggedIn: req.session.isLoggedIn
+  });
 };
 
 //@route POST api/users/register
