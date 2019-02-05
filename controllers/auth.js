@@ -104,10 +104,16 @@ exports.postLogin = (req, res, next) => {
       if (isMatch) {
         req.session.isLoggedIn = true;
         req.session.user = user;
-        req.session.save(err => {
-          console.log(err);
-          res.redirect("/");
-        });
+        req.session
+          .save(err => {
+            console.log(err);
+            res.redirect("/");
+          })
+          .catch(err => {
+            console.log(err);
+            errors.password = "Contraseña incorrecta";
+            return res.status(400).json(errors);
+          });
 
         // usuario encontrado
         // const payload = { id: user.id, name: user.nombre, avatar: user.avatar }; // crear payload jwt
@@ -123,9 +129,6 @@ exports.postLogin = (req, res, next) => {
             res.redirect("/");
           }
         );*/
-      } else {
-        errors.password = "Contraseña incorrecta";
-        return res.status(400).json(errors);
       }
     });
   });
@@ -136,7 +139,7 @@ exports.postLogin = (req, res, next) => {
 //@acceso: privado
 exports.postLogout = (req, res) => {
   req.session.destroy(err => {
-    console.log(err);
+    if (err) console.log(err);
     res.redirect("/");
   });
 };

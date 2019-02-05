@@ -1,40 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../../controllers/auth");
+const autenticar = require("../../middleware/autenticar");
 
-//@route GET api/users/test
-//@description probar rutas de usuarios
-//@acceso: público
 router.get("/test", (req, res) => res.json({ msg: "usuarios funciona" }));
 
-//@route GET api/users/register
-//@description render formulario de registro
-//@acceso: público
 router.get("/register", authController.getRegister);
 
-//@route POST api/users/register
-//@description registrar usuarios
-//@acceso: público
 router.post("/register", authController.postRegister);
 
-//@route GET api/users/login
-//@description render formulario de login
-//@acceso: público
 router.get("/login", authController.getLogin);
 
-//@route POST api/users/login
-//@description login de usuario / devolver jwt token
-//@acceso: público
 router.post("/login", authController.postLogin);
 
-//@route POST api/users/logout
-//@description logout de usuario
-//@acceso: privado
-router.post("/logout", authController.postLogout);
+router.post("/logout", autenticar, authController.postLogout);
 
-//@route GET api/users/current
-//@description devuelve usuario actual
-//@acceso: privado
-router.get("/current", authController.getCurrent);
+router.get("/current", autenticar, authController.getCurrent);
 
 module.exports = router;

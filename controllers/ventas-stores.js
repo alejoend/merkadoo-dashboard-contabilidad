@@ -12,16 +12,11 @@ const validateVentaStoreInput = require("../validation/venta-store");
 
 exports.getVentasStores = (passport.authenticate("jwt", { session: false }),
 (req, res) => {
-  if (req.session.isLoggedIn) {
-    VentaStore.find()
-      .then(ventasStores => {
-        res.json(ventasStores);
-      })
-      .catch(err => console.log(err));
-  } else {
-    res.status(401);
-    res.redirect("/");
-  }
+  VentaStore.find()
+    .then(ventasStores => {
+      res.json(ventasStores);
+    })
+    .catch(err => console.log(err));
 });
 
 //@route POST api/ventas-stores/register
@@ -61,17 +56,12 @@ exports.postVentaStore = (passport.authenticate("jwt", { session: false }),
 
 exports.getVentaStore = (passport.authenticate("jwt", { session: false }),
 (req, res) => {
-  if (req.session.isLoggedIn) {
-    const ventaStoreId = req.params.ventaStoreId;
-    VentaStore.findById(ventaStoreId)
-      .then(venta => {
-        res.json(venta);
-      })
-      .catch(err => console.log(err));
-  } else {
-    res.status(401);
-    res.redirect("/");
-  }
+  const ventaStoreId = req.params.ventaStoreId;
+  VentaStore.findById(ventaStoreId)
+    .then(venta => {
+      res.json(venta);
+    })
+    .catch(err => console.log(err));
 });
 
 //@route POST api/edit-venta-store/:ventaStoreId
