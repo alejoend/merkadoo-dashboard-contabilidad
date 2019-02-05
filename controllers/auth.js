@@ -17,8 +17,7 @@ const User = require("../models/User");
 exports.getRegister = (req, res, next) => {
   res.render("auth/register", {
     pageTitle: "Registrar Usuario",
-    path: "/api/users/register",
-    isLoggedIn: req.session.isLoggedIn
+    path: "/api/users/register"
   });
 };
 
@@ -71,10 +70,15 @@ exports.postRegister = (req, res, next) => {
 //@description render formulario de login
 //@acceso: público
 exports.getLogin = (req, res, next) => {
+  const messages = { notFoundError: null, wrongPwdError: null };
+  if (Object.keys(messages).length > 0) {
+    messages.notFoundError = req.flash("notFoundError")[0];
+    messages.wrongPwdError = req.flash("wrongPwdError")[0];
+  }
   res.render("auth/login", {
     pageTitle: "Login",
     path: "/api/users/login",
-    isLoggedIn: req.session.isLoggedIn
+    messages: messages
   });
 };
 
@@ -96,7 +100,9 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email }).then(user => {
     if (!user) {
       errors.email = "Usuario no encontrado";
-      return res.status(404).json(errors);
+      req.flash("notFoundError", "Usuario no encontrado");
+      req.flash("error", true);
+      return res.redirect("/api/users/login");
     }
 
     // verificar contraseña
@@ -105,13 +111,14 @@ exports.postLogin = (req, res, next) => {
       .then(isMatch => {
         if (isMatch) {
           req.session.isLoggedIn = true;
-          console.log("1");
           req.session.user = user;
-          console.log("2");
           req.session.save(err => {
-            console.log("Session saved", err);
             res.redirect("/");
           });
+        } else {
+          errors.password = "Contraseña incorrecta";
+          req.flash("wrongPwdError", "Contraseña incorrecta");
+          return res.redirect("/api/users/login");
         }
 
         // usuario encontrado
@@ -131,8 +138,6 @@ exports.postLogin = (req, res, next) => {
       })
       .catch(err => {
         console.log(err);
-        errors.password = "Contraseña incorrecta";
-        res.status(400).json(errors);
       });
   });
 };

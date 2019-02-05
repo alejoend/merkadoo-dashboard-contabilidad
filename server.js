@@ -1,13 +1,14 @@
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
 const bodyParser = require("body-parser");
 
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const mongoose = require("mongoose");
 const helmet = require("helmet");
 const passport = require("passport");
 const csrf = require("csurf");
+const flash = require("connect-flash");
 
 const keys = require("./config/keys");
 const User = require("./models/User");
@@ -44,6 +45,7 @@ app.use(
   })
 );
 app.use(csrfProtection);
+app.use(flash());
 
 // conectar a mongo db
 mongoose
