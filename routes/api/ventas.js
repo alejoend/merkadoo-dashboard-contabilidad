@@ -3,7 +3,7 @@ const router = express.Router();
 const ventasController = require("../../controllers/ventas");
 const autenticar = require("../../middleware/autenticar");
 
-router.get("/", ventasController.getVentas);
+router.get("/", autenticar, ventasController.getVentas);
 
 router.post("/register", autenticar, ventasController.postVenta);
 

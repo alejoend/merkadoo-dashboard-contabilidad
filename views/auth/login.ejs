@@ -1,6 +1,7 @@
 <%- include('../includes/head.ejs') %> <%- include('../includes/navigation.ejs')
 %>
 <form action="/api/users/login" method="POST">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
   <div class="container">
     <label for="email"><b>Email</b></label>
     <input type="text" placeholder="Introducir Email" name="email" required />

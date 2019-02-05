@@ -11,6 +11,7 @@
     <li><a href="/api/ventas" class="nav-links">Ventas</a></li>
     <li>
       <form action="/api/users/logout" , method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit" class="">Logout</button>
       </form>
     </li>
