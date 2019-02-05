@@ -3,17 +3,17 @@
 <form action="/api/users/login" method="POST">
   <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
   <div class="container">
-    <label for="email"><b>Email</b></label> <% if(!messages.notFoundError) { %>
+    <label for="email"><b>Email</b></label> <% if(!messages.invalidEmail) { %>
     <input type="text" placeholder="Introducir Email" name="email" required />
     <% } else { %>
     <input
       type="text"
-      value="<%= messages.notFoundError %>"
+      value="<%= messages.invalidEmail %>"
       name="email"
       required
     />
     <% } %> <label for="password"><b>Contraseña</b></label> <%
-    if(!messages.wrongPwdError) { %>
+    if(!messages.invalidPwd) { %>
     <input
       type="password"
       placeholder="Introducir Contraseña"
@@ -24,7 +24,7 @@
     <input
       type="text"
       placeholder="Introducir Contraseña"
-      value="<%= messages.wrongPwdError%>"
+      value="<%= messages.invalidPwd %>"
       name="password"
       required
     />

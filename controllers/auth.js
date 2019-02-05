@@ -15,9 +15,25 @@ const User = require("../models/User");
 //@description render formulario de registro
 //@acceso: público
 exports.getRegister = (req, res, next) => {
+  const errors = req.flash("errors");
+  let messages = {
+    invalidName: null,
+    invalidEmail: null,
+    invalidPwd: null,
+    ivalidPwdConfirmation: null
+  };
+  if (errors.length > 0) {
+    messages = {
+      invalidName: errors[0].nombre,
+      invalidEmail: errors[0].email,
+      invalidPwd: errors[0].password,
+      invalidPwdConfirmation: errors[0].password2
+    };
+  }
   res.render("auth/register", {
     pageTitle: "Registrar Usuario",
-    path: "/api/users/register"
+    path: "/api/users/register",
+    messages: messages
   });
 };
 
@@ -29,13 +45,15 @@ exports.postRegister = (req, res, next) => {
 
   // validar entrada
   if (!isValid) {
-    return res.status(400).json(errors);
+    req.flash("errors", errors);
+    return res.redirect("/api/users/register");
   }
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      errors.email = "email ya existe";
-      return res.status(400).json(errors);
+      errors.email = "Email ya existe";
+      req.flash("errors", errors);
+      return res.redirect("/api/users/register");
     } else {
       const avatar = gravatar.url(req.body.email, {
         s: 200, // tamaño
@@ -70,11 +88,18 @@ exports.postRegister = (req, res, next) => {
 //@description render formulario de login
 //@acceso: público
 exports.getLogin = (req, res, next) => {
-  const messages = { notFoundError: null, wrongPwdError: null };
-  if (Object.keys(messages).length > 0) {
-    messages.notFoundError = req.flash("notFoundError")[0];
-    messages.wrongPwdError = req.flash("wrongPwdError")[0];
+  const errors = req.flash("errors");
+  let messages = {
+    invalidEmail: null,
+    invalidPwd: null
+  };
+  if (errors.length > 0) {
+    messages = {
+      invalidEmail: errors[0].email,
+      invalidPwd: errors[0].password
+    };
   }
+
   res.render("auth/login", {
     pageTitle: "Login",
     path: "/api/users/login",
@@ -90,7 +115,8 @@ exports.postLogin = (req, res, next) => {
 
   // validar entrada
   if (!isValid) {
-    return res.status(400).json(errors);
+    req.flash("errors", errors);
+    return res.redirect("/api/users/register");
   }
 
   const email = req.body.email;
@@ -100,8 +126,7 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email }).then(user => {
     if (!user) {
       errors.email = "Usuario no encontrado";
-      req.flash("notFoundError", "Usuario no encontrado");
-      req.flash("error", true);
+      req.flash("errors", errors);
       return res.redirect("/api/users/login");
     }
 
@@ -113,11 +138,12 @@ exports.postLogin = (req, res, next) => {
           req.session.isLoggedIn = true;
           req.session.user = user;
           req.session.save(err => {
+            console.log(err);
             res.redirect("/");
           });
         } else {
           errors.password = "Contraseña incorrecta";
-          req.flash("wrongPwdError", "Contraseña incorrecta");
+          req.flash("errors", errors);
           return res.redirect("/api/users/login");
         }
 
