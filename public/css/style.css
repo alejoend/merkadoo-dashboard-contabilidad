@@ -2,99 +2,118 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0; }
-
-html {
-  height: 100%; }
-
-body {
-  font-family: "Josefin Sans", sans-serif;
-  height: 100%; }
+  *__html {
+    height: 100%; }
+  *__body {
+    font-family: "Open Sans", sans-serif;
+    height: 100%; }
 
 /* Add padding to containers */
 .container {
-  padding: 16px;
-  background-color: white; }
-
-.container h1 {
+  padding: 10px;
+  background-color: white;
   text-align: center;
-  margin: 24px 0 -16px 0; }
+  /* Add a blue text color to links */ }
+  .container h1 {
+    text-align: center;
+    font-size: 25px;
+    margin: 10px 0 -16px 0; }
+  .container a {
+    color: dodgerblue; }
+
+/* Set a grey background color and center the text of the "sign in" section */
+.footersignin {
+  text-align: center;
+  font-size: 15px; }
 
 /* Full-width input fields */
+:focus {
+  outline: none; }
+
+.col-3 {
+  display: block;
+  float: initial;
+  width: 27.33%;
+  margin: 2% auto;
+  position: relative; }
+
+/* necessary to give position: relative to parent. */
 input[type="text"],
 input[type="password"] {
+  font: 15px/24px "Lato", sans-serif;
+  color: #5be172;
   width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1; }
+  box-sizing: border-box;
+  letter-spacing: 1px; }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-  background-color: #ddd;
-  outline: none; }
+.effect-1 {
+  border: 0;
+  padding: 7px 0;
+  border-bottom: 1px solid #ccc; }
+  .effect-1 ~ .focus-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #5be172;
+    transition: 0.5s; }
+  .effect-1:focus ~ .focus-border {
+    width: 100%;
+    transition: 0.4s; }
+
+/* Set a style for the submit button */
+.registerbtn {
+  background-color: #5be172;
+  border-radius: 10px;
+  color: white;
+  float: inherit;
+  top: 40%;
+  right: 20%;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  opacity: 0.9; }
+  .registerbtn:hover {
+    opacity: 1; }
 
 /* Overwrite default styles of hr */
 hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px; }
 
-/* Set a style for the submit button */
-.registerbtn {
-  background-color: #5be172;
-  color: white;
-  padding: 16px 20px;
-  margin: -8px 0px 8px 0px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9; }
-
-.registerbtn:hover {
-  opacity: 1; }
-
-/* Add a blue text color to links */
-a {
-  color: dodgerblue; }
-
-/* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-  margin: -8px 16px 16px 16px; }
-
 .navbar {
   font-size: 18px;
   background-color: #5be172;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 10px; }
+  border: 0px solid white;
+  padding-bottom: 0px; }
+  .navbar__-toggle {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 24px; }
+  .navbar__logo {
+    display: inline-block;
+    margin-top: 40px;
+    margin-left: 40px; }
 
 .main-nav {
   list-style-type: none;
   display: none; }
+  .main-nav__li {
+    text-align: center;
+    margin: 14px auto; }
 
 .nav-links,
 .logo {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.7); }
-
-.main-nav li {
-  text-align: center;
-  margin: 15px auto; }
-
-.logo {
-  display: inline-block;
-  font-size: 22px;
-  margin-top: 10px;
-  margin-left: 20px; }
-
-.navbar-toggle {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 24px; }
+  color: rgba(255, 255, 255, 0.7);
+  transition: 0.4s;
+  padding: 0 10px;
+  margin: 0 10px; }
 
 .active {
   display: block; }
@@ -111,14 +130,15 @@ a {
     margin-right: 30px;
     flex-direction: row;
     justify-content: flex-end; }
-  .main-nav li {
-    margin: 0; }
+    .main-nav__li {
+      margin: 0; }
   .nav-links {
     margin-left: 40px; }
   .logo {
     margin-top: 0; }
   .navbar-toggle {
     display: none; }
-  .logo:hover,
   .nav-links:hover {
-    color: white; } }
+    background-color: white;
+    color: #5be172;
+    padding: 24px 10px; } }

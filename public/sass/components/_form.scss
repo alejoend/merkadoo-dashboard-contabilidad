@@ -1,49 +1,77 @@
 /* Add padding to containers */
 .container {
-  padding: 16px;
+  padding: 10px;
   background-color: $white;
+  text-align: center;
   & h1 {
     text-align: center;
-    margin: 24px 0 -16px 0;
+    font-size: 25px;
+    margin: 10px 0 -16px 0;
   }
   /* Add a blue text color to links */
   & a {
     color: $bluetxt;
   }
-
-  /* Set a grey background color and center the text of the "sign in" section */
-  &__signin {
-    background-color: $bgcolor-signin;
-    text-align: center;
-    margin: -8px 16px 16px 16px;
-  }
+}
+/* Set a grey background color and center the text of the "sign in" section */
+.footersignin {
+  text-align: center;
+  font-size: 15px;
 }
 /* Full-width input fields */
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: $bgcolor-signin;
-}
-input[type="text"]:focus,
-input[type="password"]:focus {
-  background-color: $bgcolor-input;
+:focus {
   outline: none;
 }
+
+.col-3 {
+  display: block;
+  float: initial;
+  width: 27.33%;
+  margin: 2% auto;
+  position: relative;
+} /* necessary to give position: relative to parent. */
+input[type="text"],
+input[type="password"] {
+  font: 15px/24px "Lato", sans-serif;
+  color: $bgcolor-nav;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+.effect-1 {
+  border: 0;
+  padding: 7px 0;
+  border-bottom: 1px solid #ccc;
+  & ~ .focus-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: $bgcolor-nav;
+    transition: 0.5s;
+  }
+  &:focus ~ .focus-border {
+    width: 100%;
+    transition: 0.4s;
+  }
+}
+
 /* Set a style for the submit button */
 .registerbtn {
   background-color: $bgcolor-nav;
+  border-radius: 10px;
   color: $white;
+  float: inherit;
+  top: 40%;
+  right: 20%;
   padding: 16px 20px;
-  margin: -8px 0px 8px 0px;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 20%;
   opacity: 0.9;
-  &__:hover {
+  &:hover {
     opacity: 1;
   }
 }
