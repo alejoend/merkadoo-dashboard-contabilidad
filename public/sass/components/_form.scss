@@ -7,6 +7,7 @@
     text-align: center;
     font-size: 25px;
     margin: 10px 0 -16px 0;
+    animation: moveInRight 0.5s;
   }
   /* Add a blue text color to links */
   & a {
@@ -17,6 +18,10 @@
 .footersignin {
   text-align: center;
   font-size: 15px;
+  &__link {
+    text-decoration: none;
+    color: $bgcolor-nav;
+  }
 }
 /* Full-width input fields */
 :focus {
@@ -70,9 +75,14 @@ input[type="password"] {
   border: none;
   cursor: pointer;
   width: 20%;
-  opacity: 0.9;
+
   &:hover {
-    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5spx 10px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -80,4 +90,28 @@ input[type="password"] {
 hr {
   border: 1px solid $bgcolor-signin;
   margin-bottom: 25px;
+}
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  80% {
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
+}
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0px);
+  }
 }

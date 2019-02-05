@@ -2,13 +2,13 @@
   <span class="navbar-toggle" id="js-navbar-toggle">
     <i style="font-size:24px" class="fa">&#xf0c9;</i>
   </span>
-  <a href="/" class="logo">
+  <a class="navbar__logo" href="/">
     <img src="\../resources/merkadooTextO.jpg" />
   </a>
   <ul class="main-nav" id="js-menu">
     <% if (!isLoggedIn) { %>
     <li><a href="/api/users/register" class="nav-links">Registrar</a></li>
-    <li><a href="/api/users/login" class="nav-links">Login</a></li>
+    <li><a href="/api/users/login" class="nav-links">Iniciar Sesión</a></li>
     <% }else{ %>
     <li><a href="/api/ventas" class="nav-links">Ventas</a></li>
     <li>
