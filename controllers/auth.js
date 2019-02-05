@@ -1,6 +1,8 @@
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+// const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const passport = require("passport");
 
@@ -10,6 +12,14 @@ const validateLoginInput = require("../validation/login");
 
 // traer modelo de usuario
 const User = require("../models/User");
+
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: keys.sendgridKey
+    }
+  })
+);
 
 //@route GET api/users/register
 //@description render formulario de registro
@@ -61,25 +71,37 @@ exports.postRegister = (req, res, next) => {
         d: "mm" //default
       });
 
+      const nombre = req.body.nombre;
+      const email = req.body.email;
+      const password = req.body.password;
+
       const newUser = new User({
-        nombre: req.body.nombre,
-        email: req.body.email,
+        nombre: nombre,
+        email: email,
         avatar,
-        password: req.body.password
+        password: password
       });
 
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => {
-              res.redirect("/api/users/login");
-            })
-            .catch(err => console.log(err));
-        });
-      });
+      bcrypt
+        .genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => {
+                res.redirect("/api/users/login");
+                return transporter.sendMail({
+                  to: email,
+                  from: "merkadoo-contabilidad@merkadoo.com",
+                  subject: "Registro exitoso",
+                  html: "<h1>Has sido registrado exitosamente</h1>"
+                });
+              })
+              .catch(err => console.log(err));
+          });
+        })
+        .catch(err => console.log(err));
     }
   });
 };
