@@ -37,7 +37,7 @@
 } /* necessary to give position: relative to parent. */
 input[type="text"],
 input[type="password"] {
-  font: 15px/24px "Lato", sans-serif;
+  font: 15px/24px "Open Sans", sans-serif;
   color: $bgcolor-nav;
   width: 100%;
   box-sizing: border-box;
@@ -47,7 +47,7 @@ input[type="password"] {
 .effect-1 {
   border: 0;
   padding: 7px 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $bgcolor-input;
   & ~ .focus-border {
     position: absolute;
     bottom: 0;
