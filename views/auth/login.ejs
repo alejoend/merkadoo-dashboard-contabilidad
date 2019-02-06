@@ -1,38 +1,39 @@
 <%- include('../includes/head.ejs') %> <%- include('../includes/navigation.ejs')
 %>
 <form action="/api/users/login" method="POST">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
   <div class="container">
-    <h1 class="loginheader">Iniciar Sesión</h1>
-    <div class="col-3">
-      <label for="email"></label>
-      <input
-        class="effect-1"
-        type="text"
-        placeholder="Introducir Email"
-        name="email"
-        required
-      />
-      <span class="focus-border"></span>
-    </div>
-    <div class="col-3">
-      <label for="password"></label>
-      <input
-        class="effect-1"
-        type="password"
-        placeholder="Introducir Contraseña"
-        name="password"
-        required
-      /><span class="focus-border"></span>
-    </div>
-
-    <button type="submit" class="registerbtn">Iniciar Sesión</button>
+    <label for="email"><b>Email</b></label>
+    <% if(!messages.invalidEmail) { %>
+    <input type="text" placeholder="Introducir Email" name="email" required />
+    <% } else { %>
+    <input
+      type="text"
+      value="<%= messages.invalidEmail %>"
+      name="email"
+      required
+    />
+    <% } %> <label for="password"><b>Contraseña</b></label>
+    <% if(!messages.invalidPwd) { %>
+    <input
+      type="password"
+      placeholder="Introducir Contraseña"
+      name="password"
+      required
+    />
+    <% } else { %>
+    <input
+      type="text"
+      placeholder="Introducir Contraseña"
+      value="<%= messages.invalidPwd %>"
+      name="password"
+      required
+    />
+    <% } %> <button type="submit" class="registerbtn">Log-in</button>
   </div>
-
-  <div class="footersignin">
-    <p>
-      ¿No tienes una cuenta?
-      <a class="footersignin__link" href="/api/users/register"> Regístrate</a>
-    </p>
+  <hr />
+  <div class="container signin">
+    <p>No tienes una cuenta? <a href="/api/users/register">Regístrate</a></p>
   </div>
 </form>
 <%- include('../includes/end.ejs') %>

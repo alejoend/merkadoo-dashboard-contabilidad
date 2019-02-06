@@ -1,6 +1,8 @@
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+// const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const passport = require("passport");
 
@@ -11,14 +13,37 @@ const validateLoginInput = require("../validation/login");
 // traer modelo de usuario
 const User = require("../models/User");
 
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: keys.sendgridKey
+    }
+  })
+);
+
 //@route GET api/users/register
 //@description render formulario de registro
 //@acceso: público
 exports.getRegister = (req, res, next) => {
+  const errors = req.flash("errors");
+  let messages = {
+    invalidName: null,
+    invalidEmail: null,
+    invalidPwd: null,
+    ivalidPwdConfirmation: null
+  };
+  if (errors.length > 0) {
+    messages = {
+      invalidName: errors[0].nombre,
+      invalidEmail: errors[0].email,
+      invalidPwd: errors[0].password,
+      invalidPwdConfirmation: errors[0].password2
+    };
+  }
   res.render("auth/register", {
     pageTitle: "Registrar Usuario",
     path: "/api/users/register",
-    isLoggedIn: req.session.isLoggedIn
+    messages: messages
   });
 };
 
@@ -30,13 +55,15 @@ exports.postRegister = (req, res, next) => {
 
   // validar entrada
   if (!isValid) {
-    return res.status(400).json(errors);
+    req.flash("errors", errors);
+    return res.redirect("/api/users/register");
   }
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      errors.email = "email ya existe";
-      return res.status(400).json(errors);
+      errors.email = "Email ya existe";
+      req.flash("errors", errors);
+      return res.redirect("/api/users/register");
     } else {
       const avatar = gravatar.url(req.body.email, {
         s: 200, // tamaño
@@ -44,25 +71,37 @@ exports.postRegister = (req, res, next) => {
         d: "mm" //default
       });
 
+      const nombre = req.body.nombre;
+      const email = req.body.email;
+      const password = req.body.password;
+
       const newUser = new User({
-        nombre: req.body.nombre,
-        email: req.body.email,
+        nombre: nombre,
+        email: email,
         avatar,
-        password: req.body.password
+        password: password
       });
 
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => {
-              res.json(user);
-            })
-            .catch(err => console.log(err));
-        });
-      });
+      bcrypt
+        .genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => {
+                res.redirect("/api/users/login");
+                return transporter.sendMail({
+                  to: email,
+                  from: "merkadoo-contabilidad@merkadoo.com",
+                  subject: "Registro exitoso",
+                  html: "<h1>Has sido registrado exitosamente</h1>"
+                });
+              })
+              .catch(err => console.log(err));
+          });
+        })
+        .catch(err => console.log(err));
     }
   });
 };
@@ -71,10 +110,22 @@ exports.postRegister = (req, res, next) => {
 //@description render formulario de login
 //@acceso: público
 exports.getLogin = (req, res, next) => {
+  const errors = req.flash("errors");
+  let messages = {
+    invalidEmail: null,
+    invalidPwd: null
+  };
+  if (errors.length > 0) {
+    messages = {
+      invalidEmail: errors[0].email,
+      invalidPwd: errors[0].password
+    };
+  }
+
   res.render("auth/login", {
     pageTitle: "Login",
     path: "/api/users/login",
-    isLoggedIn: req.session.isLoggedIn
+    messages: messages
   });
 };
 
@@ -86,7 +137,8 @@ exports.postLogin = (req, res, next) => {
 
   // validar entrada
   if (!isValid) {
-    return res.status(400).json(errors);
+    req.flash("errors", errors);
+    return res.redirect("/api/users/register");
   }
 
   const email = req.body.email;
@@ -96,15 +148,27 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email }).then(user => {
     if (!user) {
       errors.email = "Usuario no encontrado";
-      return res.status(404).json(errors);
+      req.flash("errors", errors);
+      return res.redirect("/api/users/login");
     }
 
     // verificar contraseña
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        req.session.isLoggedIn = true;
-        req.session.user = user;
-        res.redirect("/");
+    bcrypt
+      .compare(password, user.password)
+      .then(isMatch => {
+        if (isMatch) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          req.session.save(err => {
+            console.log(err);
+            res.redirect("/");
+          });
+        } else {
+          errors.password = "Contraseña incorrecta";
+          req.flash("errors", errors);
+          return res.redirect("/api/users/login");
+        }
+
         // usuario encontrado
         // const payload = { id: user.id, name: user.nombre, avatar: user.avatar }; // crear payload jwt
 
@@ -119,11 +183,10 @@ exports.postLogin = (req, res, next) => {
             res.redirect("/");
           }
         );*/
-      } else {
-        errors.password = "Contraseña incorrecta";
-        return res.status(400).json(errors);
-      }
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   });
 };
 
@@ -132,7 +195,7 @@ exports.postLogin = (req, res, next) => {
 //@acceso: privado
 exports.postLogout = (req, res) => {
   req.session.destroy(err => {
-    console.log(err);
+    console.log("Error: ", err);
     res.redirect("/");
   });
 };
