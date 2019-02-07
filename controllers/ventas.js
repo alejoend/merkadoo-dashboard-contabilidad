@@ -14,7 +14,11 @@ exports.getVentas = (passport.authenticate("jwt", { session: false }),
   if (req.session.isLoggedIn) {
     Venta.find()
       .then(ventas => {
-        res.json(ventas);
+        res.render("ventas/ventas-list", {
+          pageTitle: "Ventas",
+          path: "/api/ventas",
+          ventas
+        });
       })
       .catch(err => console.log(err));
   } else {

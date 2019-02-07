@@ -40,7 +40,12 @@
 .active {
   display: block;
 }
-
+.btn-logout {
+  background-color: red;
+  border-radius: 10px;
+  color: $white;
+  width: 1it 0%;
+}
 @media screen and (min-width: 768px) {
   .navbar {
     display: flex;

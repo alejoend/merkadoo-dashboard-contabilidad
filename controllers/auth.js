@@ -1,7 +1,7 @@
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const sendgridTransport = require("nodemailer-sendgrid-transport");
+// const nodemailer = require("nodemailer");
+// const sendgridTransport = require("nodemailer-sendgrid-transport");
 // const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const passport = require("passport");

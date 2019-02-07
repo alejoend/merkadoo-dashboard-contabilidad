@@ -1,0 +1,22 @@
+<%- include('../includes/head.ejs') %> <%- include('../includes/navigation.ejs')
+%> <% for(let i = 0; i < ventas.length; i++){ %>
+<div class="container">
+  <div class="item item--1">
+    <p>ID: ventas[i]._id</p>
+    <p>Año: ventas[i].año</p>
+    <p>Mes: ventas[i].mes</p>
+    <p>Monto: ventas[i].monto</p>
+    <p>Ordenes: ventas[i].ordenes</p>
+    <p>Ordenes Anuladas: ventas[i].ordenesAnuladas</p>
+  </div>
+  <% } %>
+
+  <div class="item item--2">2: Green</div>
+  <div class="item item--3">3: Violet</div>
+  <div class="item item--4">4: Pink</div>
+  <div class="item item--5">5: Blue</div>
+  <div class="item item--6">6: Brown</div>
+  <div class="item item--7">7: Black</div>
+  <div class="item item--8">8: Grey</div>
+</div>
+<%- include('../includes/footer.ejs') %> <%- include('../includes/end.ejs') %>
